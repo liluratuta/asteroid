@@ -8,15 +8,17 @@ namespace World
         private Transform _transform;
         private WorldBounds _worldBounds;
 
-        private void Awake() => _transform = transform;
-
-        private void Start() => _worldBounds = WorldBounds.Instance;
-
-        public Vector2 Position
+        private Vector2 Position
         {
             get => _transform.position;
             set => SetPositionToWorld(value);
         }
+
+        public void Translate(Vector2 translation) => Position += translation;
+        
+        private void Awake() => _transform = transform;
+
+        private void Start() => _worldBounds = WorldBounds.Instance;
 
         private void SetPositionToWorld(Vector2 position)
         {

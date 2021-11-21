@@ -18,6 +18,6 @@ namespace Flying_Objects
 
         private void Awake() => _worldTransform = GetComponent<WorldTransform>();
 
-        private void Update() => _worldTransform.Position += _velocity * Time.deltaTime;
+        private void Update() => _worldTransform.Translate(_velocity * Time.deltaTime);
     }
 }
