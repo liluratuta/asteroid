@@ -6,29 +6,37 @@ namespace World
     public class WorldTransform : MonoBehaviour
     {
         private Transform _transform;
-        private WorldBounds _worldBounds;
 
-        private Vector2 Position
+        public Vector2 Position
         {
             get => _transform.position;
             set => SetPositionToWorld(value);
         }
 
-        public void Translate(Vector2 translation) => Position += translation;
-        
-        private void Awake() => _transform = transform;
+        public Vector2 Forward => _transform.right;
 
-        private void Start() => _worldBounds = WorldBounds.Instance;
+        public float Scale
+        {
+            set => _transform.localScale = new Vector3(value, value, 1f);
+        }
+
+        public void Translate(Vector2 translation) => Position += translation;
+
+        public void RightTranslate(float step) => Position += (Vector2)_transform.right * step;
+
+        public void Rotate(float angle) => _transform.Rotate(Vector3.back, angle);
+
+        private void Awake() => _transform = transform;
 
         private void SetPositionToWorld(Vector2 position)
         {
-            if (_worldBounds.IsInside(position))
+            if (WorldBounds.Instance.IsInside(position))
             {
                 _transform.position = position;
                 return;
             }
 
-            var correctPosition = _worldBounds.ConvertToWorldBoundsPosition(position);
+            var correctPosition = WorldBounds.Instance.ConvertToWorldBoundsPosition(position);
             _transform.position = correctPosition;
         }
     }
